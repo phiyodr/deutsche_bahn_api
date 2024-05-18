@@ -20,6 +20,9 @@ class TimetableHelper:
     def __init__(self, station: Station, api_authentication: ApiAuthentication) -> None:
         self.station = station
         self.api_authentication = api_authentication
+        date_format = "%y%m%d%H%M"
+        now = datetime.now()
+        self.request_time = now.strftime(date_format)
 
     def get_timetable_xml(self, hour: Optional[int] = None, date: Optional[datetime] = None) -> str:
         hour_date: datetime = datetime.now()
@@ -64,6 +67,7 @@ class TimetableHelper:
                 continue
 
             train_object: Train = Train()
+            train_object.request_time = self.request_time
             train_object.stop_id = train.attrib["id"]
             train_object.train_type = trip_label_object["c"]
             train_object.train_number = trip_label_object["n"]
